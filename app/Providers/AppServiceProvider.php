@@ -9,6 +9,8 @@ use App\Services\Contracts\UserServiceInterface;
 use App\Services\Contracts\AuthServiceInterface;
 use App\Services\UserService;
 use App\Services\AuthService;
+use App\Observers\UserObserver;
+use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        User::observe(UserObserver::class);
     }
 }
