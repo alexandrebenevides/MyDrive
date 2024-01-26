@@ -2,7 +2,13 @@
   <div class="mb-4">
     <h4>Meus arquivos</h4>
 
-    <button type="button" class="btn btn-primary"><i class="fa-solid fa-upload"></i> Enviar arquivos</button>
+    <button 
+      type="button"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#sendFilesModal">
+        <i class="fa-solid fa-upload"></i> Enviar arquivos
+    </button>
   </div>
 
   <div class="card border-0">
@@ -32,4 +38,6 @@
       </table>
     </div>
   </div>
+
+  @include('livewire.pages.dashboard.modals.send-files')
 </div>
