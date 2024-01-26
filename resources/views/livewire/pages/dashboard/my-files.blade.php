@@ -5,8 +5,7 @@
     <button 
       type="button"
       class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#sendFilesModal">
+      wire:click="toggleSendFilesModal(true)">
         <i class="fa-solid fa-upload"></i> Enviar arquivos
     </button>
   </div>
