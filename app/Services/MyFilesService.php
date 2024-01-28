@@ -29,4 +29,24 @@ class MyFilesService implements MyFilesServiceInterface
         $bucket = Auth::user()->bucket->name;
         MinioService::createFolder($bucket, $folderName);
     }
+
+    public function getListTree()
+    {
+        $bucket = Auth::user()->bucket->name;
+        return MinioService::listFoldersAndFiles($bucket);
+    }
+
+    public function getFilesFromPath($pathStack)
+    {
+        $listTree = $this->getListTree();
+        $currentList = $listTree;
+
+        foreach ($pathStack as $path) {
+            if (!empty($path)){
+                $currentList = $currentList[$path];
+            }
+        }
+
+        return $currentList;
+    }
 }

@@ -83,4 +83,34 @@ class MinioService implements MinioServiceInterface
 
         throw new CreateFolderException('Erro ao criar pasta: ' . $folderName);
     }
+
+    public static function listFoldersAndFiles(string $bucketName)
+    {
+        $client = (new self())->getS3Client();
+
+        $result = $client->listObjectsV2([
+            'Bucket' => $bucketName
+        ]);
+    
+        $listTree = [];
+        foreach ($result['Contents'] as $objeto) {
+            $path = $objeto['Key'];
+            $size = $objeto['Size'];
+            $lastModified = $objeto['LastModified'];
+    
+            $slices = explode('/', $path);
+            $current = &$listTree;
+    
+            foreach ($slices as $slice) {
+                if (!empty($slice)) {
+                    $current = &$current[$slice];
+                }
+            }
+    
+            $current['size'] = $size;
+            $current['lastModified'] = $lastModified;
+        }
+
+        return $listTree;
+    }
 }

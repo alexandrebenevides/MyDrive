@@ -10,4 +10,6 @@ interface MinioServiceInterface
     public static function createBucket();
     public function checkBucketExists(string $bucketName);
     public static function uploadFile(string $bucketName, TemporaryUploadedFile $file);
+    public static function createFolder(string $bucketName, string $folderName);
+    public static function listFoldersAndFiles(string $bucketName);
 }

@@ -20,7 +20,7 @@
   <div class="card border-0">
     <div class="card-header">
       <h6 class="card-title">
-        Diretório atual: /
+        Diretório atual: /{{ implode('/', $pathStack) }}
       </h6>
     </div>
     <div class="card-body">
@@ -34,12 +34,17 @@
           </tr>
         </thead>
         <tbody>
+          @foreach ($listTree as $key => $itemTree)
           <tr>
-            <th scope="row">Teste</th>
-            <td>01/01/2024</td>
-            <td>12548784 bytes</td>
-            <td>Botões</td>
+            <th scope="row">
+              <i class="fa-regular fa-{{ ($itemTree['size'] > 0) ? 'file' : 'folder' }}"></i>
+              {{ $key }}
+            </th>
+            <td>{{ $itemTree['lastModified'] }}</td>
+            <td>{{ $itemTree['size'] }} bytes</td>
+            <td>---</td>
           </tr>
+          @endforeach
         </tbody>
       </table>
     </div>

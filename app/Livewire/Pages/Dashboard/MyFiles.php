@@ -12,6 +12,8 @@ class MyFiles extends Component
     
     public $files;
     public $folderName;
+    public $pathStack = [];
+    public $listTree = [];
 
     public function render()
     {
@@ -21,6 +23,11 @@ class MyFiles extends Component
     public function boot(MyFilesServiceInterface $myFilesService)
     {
         $this->myFilesService = $myFilesService;
+    }
+
+    public function mount()
+    {
+        $this->getListTree();
     }
 
     public function toggleSendFilesModal($action)
@@ -41,5 +48,10 @@ class MyFiles extends Component
     public function createFolder()
     {
         $this->myFilesService->createFolder($this->folderName);
+    }
+
+    public function getListTree()
+    {
+        $this->listTree = $this->myFilesService->getFilesFromPath($this->pathStack);
     }
 }
