@@ -4,7 +4,7 @@ namespace App\Livewire\Pages\Dashboard;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\Attributes\On;
+use App\Services\Contracts\MyFilesServiceInterface;
 
 class MyFiles extends Component
 {
@@ -17,6 +17,11 @@ class MyFiles extends Component
         return view('livewire.pages.dashboard.my-files');
     }
 
+    public function boot(MyFilesServiceInterface $myFilesService)
+    {
+        $this->myFilesService = $myFilesService;
+    }
+
     public function toggleSendFilesModal($action)
     {
         $this->dispatch('toggleSendFilesModal', action: $action);
@@ -24,6 +29,6 @@ class MyFiles extends Component
 
     public function uploadFiles()
     {
-        info([$this->files]);
+        $this->myFilesService->uploadFiles($this->files);
     }
 }

@@ -3,12 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Repositories\Contracts\UserRepositoryInterface;
-use App\Repositories\UserRepository;
-use App\Services\Contracts\UserServiceInterface;
-use App\Services\Contracts\AuthServiceInterface;
-use App\Services\UserService;
-use App\Services\AuthService;
 use App\Observers\UserObserver;
 use App\Models\User;
 
@@ -19,9 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        $this->app->bind(UserServiceInterface::class, UserService::class);
-        $this->app->bind(AuthServiceInterface::class, AuthService::class);
+        $this->app->bind(\App\Repositories\Contracts\UserRepositoryInterface::class, \App\Repositories\UserRepository::class);
+        $this->app->bind(\App\Services\Contracts\UserServiceInterface::class, \App\Services\UserService::class);
+        $this->app->bind(\App\Services\Contracts\AuthServiceInterface::class, \App\Services\AuthService::class);
+        $this->app->bind(\App\Services\Contracts\MyFilesServiceInterface::class, \App\Services\MyFilesService::class);
     }
 
     /**

@@ -20,17 +20,3 @@
     </div>
   </div>
 </div>
-
-@push('scripts')
-<script>
-  document.addEventListener('livewire:init', function () {
-
-    const sendFilesModal = new bootstrap.Modal('#sendFilesModal', {});
-
-    Livewire.on('toggleSendFilesModal', (event) => {
-      event.action ? sendFilesModal.show() : sendFilesModal.hide();
-    });
-
-  });
-</script>
-@endpush

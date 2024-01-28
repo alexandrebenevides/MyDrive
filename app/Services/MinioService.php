@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use App\Exceptions\UploadFileException;
 use App\Services\Contracts\MinioServiceInterface;
 use Aws\S3\S3Client;
 use Str;
@@ -26,7 +28,7 @@ class MinioService implements MinioServiceInterface
         $client = (new self())->getS3Client();
         $bucketName = Str::lower(Str::random(32));
         
-        while((new self())->bucketExists($bucketName)) {
+        while((new self())->checkBucketExists($bucketName)) {
             $bucketName = Str::lower(Str::random(32));
         }
 
@@ -34,7 +36,7 @@ class MinioService implements MinioServiceInterface
         return $bucketName;
     }
 
-    public function bucketExists(string $bucketName)
+    public function checkBucketExists(string $bucketName)
     {
         $client = (new self())->getS3Client();
 
@@ -44,5 +46,23 @@ class MinioService implements MinioServiceInterface
         } catch (\Aws\S3\Exception\S3Exception $e) {
             return false;
         }
+    }
+
+    public static function uploadFile(string $bucketName, TemporaryUploadedFile $file)
+    {
+        $client = (new self())->getS3Client();
+
+        $result = $client->putObject([
+            'Bucket' => $bucketName,
+            'Key' => $file->getClientOriginalName(),
+            'Body' => fopen($file->path(), 'rb'),
+            'ACL' => 'private',
+        ]);
+
+        if ($result->get('@metadata')['statusCode'] == 200) {
+            return true;
+        }
+
+        throw new UploadFileException('Erro ao enviar o arquivo: ' . $file->getClientOriginalName());
     }
 }
