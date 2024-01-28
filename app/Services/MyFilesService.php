@@ -23,4 +23,10 @@ class MyFilesService implements MyFilesServiceInterface
             MinioService::uploadFile($bucket, $file);
         }
     }
+
+    public function createFolder(string $folderName)
+    {
+        $bucket = Auth::user()->bucket->name;
+        MinioService::createFolder($bucket, $folderName);
+    }
 }

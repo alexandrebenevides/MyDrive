@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use App\Exceptions\UploadFileException;
+use App\Exceptions\CreateFolderException;
 use App\Services\Contracts\MinioServiceInterface;
 use Aws\S3\S3Client;
 use Str;
@@ -64,5 +65,22 @@ class MinioService implements MinioServiceInterface
         }
 
         throw new UploadFileException('Erro ao enviar o arquivo: ' . $file->getClientOriginalName());
+    }
+
+    public static function createFolder(string $bucketName, string $folderName)
+    {
+        $client = (new self())->getS3Client();
+
+        $result = $client->putObject([
+            'Bucket' => $bucketName,
+            'Key'    => $folderName . '/',
+            'Body'   => '',
+        ]);
+
+        if ($result->get('@metadata')['statusCode'] == 200) {
+            return true;
+        }
+
+        throw new CreateFolderException('Erro ao criar pasta: ' . $folderName);
     }
 }

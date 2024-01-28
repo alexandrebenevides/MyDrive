@@ -11,6 +11,7 @@ class MyFiles extends Component
     use WithFileUploads;
     
     public $files;
+    public $folderName;
 
     public function render()
     {
@@ -27,8 +28,18 @@ class MyFiles extends Component
         $this->dispatch('toggleSendFilesModal', action: $action);
     }
 
+    public function toggleCreateFolderModal($action)
+    {
+        $this->dispatch('toggleCreateFolderModal', action: $action);
+    }
+
     public function uploadFiles()
     {
         $this->myFilesService->uploadFiles($this->files);
+    }
+
+    public function createFolder()
+    {
+        $this->myFilesService->createFolder($this->folderName);
     }
 }

@@ -8,6 +8,13 @@
       wire:click="toggleSendFilesModal(true)">
         <i class="fa-solid fa-upload"></i> Enviar arquivos
     </button>
+
+    <button 
+      type="button"
+      class="btn btn-primary"
+      wire:click="toggleCreateFolderModal(true)">
+        <i class="fa-solid fa-folder"></i> Nova pasta
+    </button>
   </div>
 
   <div class="card border-0">
@@ -39,4 +46,5 @@
   </div>
 
   @include('livewire.pages.dashboard.modals.send-files')
+  @include('livewire.pages.dashboard.modals.create-folder')
 </div>

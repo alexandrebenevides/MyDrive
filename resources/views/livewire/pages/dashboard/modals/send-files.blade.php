@@ -8,7 +8,7 @@
       <div class="modal-body">
         <form>
           <div class="mb-3">
-            <label for="formFile" class="form-label">Selecione os arquivos</label>
+            <label class="form-label">Selecione os arquivos</label>
             <input class="form-control" type="file" name="files" wire:model="files" multiple>
           </div>
         </form>
