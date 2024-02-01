@@ -93,7 +93,7 @@ class MinioService implements MinioServiceInterface
         ]);
     
         $listTree = [];
-        foreach ($result['Contents'] as $objeto) {
+        foreach ($result['Contents'] ?? [] as $objeto) {
             $path = $objeto['Key'];
             $size = $objeto['Size'];
             $lastModified = $objeto['LastModified'];

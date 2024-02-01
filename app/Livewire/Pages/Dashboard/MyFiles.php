@@ -30,12 +30,12 @@ class MyFiles extends Component
         $this->getListTree();
     }
 
-    public function toggleSendFilesModal($action)
+    public function toggleSendFilesModal(bool $action)
     {
         $this->dispatch('toggleSendFilesModal', action: $action);
     }
 
-    public function toggleCreateFolderModal($action)
+    public function toggleCreateFolderModal(bool $action)
     {
         $this->dispatch('toggleCreateFolderModal', action: $action);
     }

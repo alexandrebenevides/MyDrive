@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class UploadFileException extends Exception
+class RemoveItemException extends Exception
 {
     
 }
