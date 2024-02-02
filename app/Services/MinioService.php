@@ -27,23 +27,23 @@ class MinioService implements MinioServiceInterface
 
     public static function createBucket()
     {
-        $client = (new self())->getS3Client();
+        $s3Client = (new self())->getS3Client();
         $bucketName = Str::lower(Str::random(32));
         
         while((new self())->checkBucketExists($bucketName)) {
             $bucketName = Str::lower(Str::random(32));
         }
 
-        $client->createBucket(['Bucket' => $bucketName]);
+        $s3Client->createBucket(['Bucket' => $bucketName]);
         return $bucketName;
     }
 
     public function checkBucketExists(string $bucketName)
     {
-        $client = (new self())->getS3Client();
+        $s3Client = (new self())->getS3Client();
 
         try {
-            $client->headBucket(['Bucket' => $bucketName]);
+            $s3Client->headBucket(['Bucket' => $bucketName]);
             return true;
         } catch (\Aws\S3\Exception\S3Exception $e) {
             return false;
@@ -52,9 +52,9 @@ class MinioService implements MinioServiceInterface
 
     public static function uploadFile(string $bucketName, string $path, TemporaryUploadedFile $file)
     {
-        $client = (new self())->getS3Client();
+        $s3Client = (new self())->getS3Client();
 
-        $result = $client->putObject([
+        $result = $s3Client->putObject([
             'Bucket' => $bucketName,
             'Key' => $path . $file->getClientOriginalName(),
             'Body' => fopen($file->path(), 'rb'),
@@ -70,12 +70,12 @@ class MinioService implements MinioServiceInterface
 
     public static function createFolder(string $bucketName, string $path, string $folderName)
     {
-        $client = (new self())->getS3Client();
+        $s3Client = (new self())->getS3Client();
 
-        $result = $client->putObject([
+        $result = $s3Client->putObject([
             'Bucket' => $bucketName,
-            'Key'    => $path . $folderName . '/',
-            'Body'   => '',
+            'Key' => $path . $folderName . '/',
+            'Body' => '',
         ]);
 
         if ($result->get('@metadata')['statusCode'] == 200) {
@@ -87,10 +87,10 @@ class MinioService implements MinioServiceInterface
 
     public static function listFoldersAndFiles(string $bucketName)
     {
-        $client = (new self())->getS3Client();
+        $s3Client = (new self())->getS3Client();
 
-        $result = $client->listObjectsV2([
-            'Bucket' => $bucketName
+        $result = $s3Client->listObjectsV2([
+            'Bucket' => $bucketName,
         ]);
     
         $listTree = [];
@@ -119,11 +119,27 @@ class MinioService implements MinioServiceInterface
 
     public static function removeItem(string $bucketName, string $objectKey)
     {
-        $client = (new self())->getS3Client();
+        $s3Client = (new self())->getS3Client();
+        
+        $isFolder = substr($objectKey, -1) === '/';
 
-        $result = $client->deleteObject([
+        if ($isFolder) {
+            $objects = $s3Client->listObjectsV2([
+                'Bucket' => $bucketName,
+                'Prefix' => $objectKey,
+            ]);
+
+            foreach ($objects['Contents'] ?? [] as $object) {
+                $s3Client->deleteObject([
+                    'Bucket' => $bucketName,
+                    'Key' => $object['Key'],
+                ]);
+            }
+        }
+
+        $result = $s3Client->deleteObject([
             'Bucket' => $bucketName,
-            'Key'    => $objectKey,
+            'Key' => $objectKey,
         ]);
 
         if ($result->get('@metadata')['statusCode'] == 204) {
