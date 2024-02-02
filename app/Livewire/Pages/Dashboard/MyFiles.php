@@ -48,15 +48,18 @@ class MyFiles extends Component
     public function uploadFiles()
     {
         $this->myFilesService->uploadFiles($this->files);
+        $this->getListTree();
     }
 
     public function createFolder()
     {
         $this->myFilesService->createFolder($this->folderName);
+        $this->getListTree();
     }
 
     public function removeItem(string $objectKey)
     {
         $this->myFilesService->removeItem($objectKey);
+        $this->getListTree();
     }
 }
