@@ -9,4 +9,5 @@ interface MyFilesServiceInterface
     public function getListTree();
     public function getFilesFromPath(array $pathStack);
     public function removeItem(string $objectKey);
+    public function getObject(string $objectKey);
 }

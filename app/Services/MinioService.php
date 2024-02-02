@@ -120,7 +120,7 @@ class MinioService implements MinioServiceInterface
     public static function removeItem(string $bucketName, string $objectKey)
     {
         $s3Client = (new self())->getS3Client();
-        
+
         $isFolder = substr($objectKey, -1) === '/';
 
         if ($isFolder) {
@@ -147,5 +147,15 @@ class MinioService implements MinioServiceInterface
         }
 
         throw new RemoveItemException('Erro ao remover item: ' . $objectKey);
+    }
+
+    public static function getObject(string $bucketName, string $objectKey)
+    {
+        $s3Client = (new self())->getS3Client();
+
+        return $s3Client->getObject([
+            'Bucket' => $bucketName,
+            'Key'    => $objectKey,
+        ]);
     }
 }

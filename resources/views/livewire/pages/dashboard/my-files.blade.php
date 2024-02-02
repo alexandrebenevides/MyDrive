@@ -61,6 +61,15 @@
               </button>
               @endif
 
+              @if ($item['size'] > 0)
+              <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                wire:click="downloadFile('{{ $item['objectKey'] }}')">
+                  <i class="fa-solid fa-download"></i>
+              </button>
+              @endif
+
               <button
                 type="button"
                 class="btn btn-primary btn-sm"

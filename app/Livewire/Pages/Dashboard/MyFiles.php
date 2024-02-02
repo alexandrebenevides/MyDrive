@@ -75,4 +75,14 @@ class MyFiles extends Component
         $this->path = count($this->pathStack) > 0 ? implode('/', $this->pathStack) . '/' : '';
         $this->getListTree();
     }
+
+    public function downloadFile(string $objectKey)
+    {
+        $fileStream = $this->myFilesService->getObject($objectKey);
+        $fileContents = $fileStream->getContents();
+
+        return response()->streamDownload(function () use ($fileContents) {
+            echo $fileContents;
+        }, basename($objectKey));
+    }
 }

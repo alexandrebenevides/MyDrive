@@ -57,4 +57,10 @@ class MyFilesService implements MyFilesServiceInterface
         $bucket = Auth::user()->bucket->name;
         MinioService::removeItem($bucket, $objectKey);
     }
+
+    public function getObject(string $objectKey)
+    {
+        $bucket = Auth::user()->bucket->name;
+        return MinioService::getObject($bucket, $objectKey)['Body'] ?? null;
+    }
 }

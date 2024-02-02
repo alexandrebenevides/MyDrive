@@ -13,4 +13,5 @@ interface MinioServiceInterface
     public static function createFolder(string $bucketName, string $path, string $folderName);
     public static function listFoldersAndFiles(string $bucketName);
     public static function removeItem(string $bucketName, string $objectKey);
+    public static function getObject(string $bucketName, string $objectKey);
 }
