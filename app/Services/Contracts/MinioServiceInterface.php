@@ -12,4 +12,5 @@ interface MinioServiceInterface
     public static function uploadFile(string $bucketName, TemporaryUploadedFile $file);
     public static function createFolder(string $bucketName, string $folderName);
     public static function listFoldersAndFiles(string $bucketName);
+    public static function removeItem(string $bucketName, string $objectKey);
 }

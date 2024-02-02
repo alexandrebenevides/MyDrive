@@ -36,7 +36,7 @@ class MyFilesService implements MyFilesServiceInterface
         return MinioService::listFoldersAndFiles($bucket);
     }
 
-    public function getFilesFromPath($pathStack)
+    public function getFilesFromPath(array $pathStack)
     {
         $listTree = $this->getListTree();
         $currentList = $listTree;
@@ -48,5 +48,11 @@ class MyFilesService implements MyFilesServiceInterface
         }
 
         return $currentList;
+    }
+
+    public function removeItem(string $objectKey)
+    {
+        $bucket = Auth::user()->bucket->name;
+        MinioService::removeItem($bucket, $objectKey);
     }
 }

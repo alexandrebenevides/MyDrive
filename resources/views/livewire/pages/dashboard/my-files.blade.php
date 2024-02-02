@@ -28,21 +28,28 @@
         <thead>
           <tr>
             <th scope="col">Nome</th>
-            <th scope="col">Data</th>
+            <th scope="col">Última alteração</th>
             <th scope="col">Tamanho</th>
             <th scope="col">Ações</th>
           </tr>
         </thead>
         <tbody>
-          @foreach ($listTree as $key => $itemTree)
+          @foreach ($listTree as $key => $item)
           <tr>
             <th scope="row">
-              <i class="fa-regular fa-{{ ($itemTree['size'] > 0) ? 'file' : 'folder' }}"></i>
+              <i class="fa-regular fa-{{ ($item['size'] > 0) ? 'file' : 'folder' }}"></i>
               {{ $key }}
             </th>
-            <td>{{ $itemTree['lastModified'] }}</td>
-            <td>{{ $itemTree['size'] }} bytes</td>
-            <td>---</td>
+            <td>{{ $item['lastModified'] }}</td>
+            <td>{{ $item['size'] }} bytes</td>
+            <td>
+              <button 
+                type="button"
+                class="btn btn-primary btn-sm"
+                wire:click="removeItem('{{ $item['objectKey'] }}')">
+                  <i class="fa-solid fa-trash"></i>
+              </button>
+            </td>
           </tr>
           @endforeach
         </tbody>

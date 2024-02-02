@@ -5,6 +5,7 @@ namespace App\Services;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use App\Exceptions\UploadFileException;
 use App\Exceptions\CreateFolderException;
+use App\Exceptions\RemoveItemException;
 use App\Services\Contracts\MinioServiceInterface;
 use Aws\S3\S3Client;
 use Str;
@@ -93,10 +94,11 @@ class MinioService implements MinioServiceInterface
         ]);
     
         $listTree = [];
-        foreach ($result['Contents'] ?? [] as $objeto) {
-            $path = $objeto['Key'];
-            $size = $objeto['Size'];
-            $lastModified = $objeto['LastModified'];
+        foreach ($result['Contents'] ?? [] as $object) {
+            $path = $object['Key'];
+            $objectKey = $object['Key'];
+            $size = $object['Size'];
+            $lastModified = $object['LastModified']->format('d/m/Y H:i:s');
     
             $slices = explode('/', $path);
             $current = &$listTree;
@@ -109,8 +111,25 @@ class MinioService implements MinioServiceInterface
     
             $current['size'] = $size;
             $current['lastModified'] = $lastModified;
+            $current['objectKey'] = $objectKey;
         }
 
         return $listTree;
+    }
+
+    public static function removeItem(string $bucketName, string $objectKey)
+    {
+        $client = (new self())->getS3Client();
+
+        $result = $client->deleteObject([
+            'Bucket' => $bucketName,
+            'Key'    => $objectKey,
+        ]);
+
+        if ($result->get('@metadata')['statusCode'] == 204) {
+            return true;
+        }
+
+        throw new RemoveItemException('Erro ao remover item: ' . $objectKey);
     }
 }

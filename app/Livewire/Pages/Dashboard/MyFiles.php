@@ -30,6 +30,11 @@ class MyFiles extends Component
         $this->getListTree();
     }
 
+    public function getListTree()
+    {
+        $this->listTree = $this->myFilesService->getFilesFromPath($this->pathStack);
+    }
+
     public function toggleSendFilesModal(bool $action)
     {
         $this->dispatch('toggleSendFilesModal', action: $action);
@@ -50,8 +55,8 @@ class MyFiles extends Component
         $this->myFilesService->createFolder($this->folderName);
     }
 
-    public function getListTree()
+    public function removeItem(string $objectKey)
     {
-        $this->listTree = $this->myFilesService->getFilesFromPath($this->pathStack);
+        $this->myFilesService->removeItem($objectKey);
     }
 }

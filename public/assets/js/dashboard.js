@@ -7,7 +7,6 @@ if (Livewire != undefined) {
 }
 
 function createLivewireEvents() {
-    console.log('tes crate');
     const sendFilesModal = new bootstrap.Modal('#sendFilesModal', {});
     const createFolderModal = new bootstrap.Modal('#createFolderModal', {});
     
