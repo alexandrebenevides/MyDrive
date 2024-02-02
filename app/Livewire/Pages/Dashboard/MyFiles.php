@@ -14,6 +14,7 @@ class MyFiles extends Component
     public $folderName;
     public $pathStack = [];
     public $listTree = [];
+    public $path = '';
 
     public function render()
     {
@@ -47,13 +48,13 @@ class MyFiles extends Component
 
     public function uploadFiles()
     {
-        $this->myFilesService->uploadFiles($this->files);
+        $this->myFilesService->uploadFiles($this->files, $this->path);
         $this->getListTree();
     }
 
     public function createFolder()
     {
-        $this->myFilesService->createFolder($this->folderName);
+        $this->myFilesService->createFolder($this->folderName, $this->path);
         $this->getListTree();
     }
 
@@ -71,6 +72,7 @@ class MyFiles extends Component
             array_push($this->pathStack, $folderName);
         }
 
+        $this->path = count($this->pathStack) > 0 ? implode('/', $this->pathStack) . '/' : '';
         $this->getListTree();
     }
 }

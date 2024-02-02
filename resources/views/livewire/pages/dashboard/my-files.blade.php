@@ -28,8 +28,8 @@
             <i class="fa-solid fa-arrow-left"></i>
         </button>
         @endif
-        
-        Diretório atual: /{{ implode('/', $pathStack) }}
+
+        Diretório atual: /{{ $path }}
       </h6>
     </div>
     <div class="card-body">

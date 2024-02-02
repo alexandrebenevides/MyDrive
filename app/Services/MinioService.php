@@ -50,13 +50,13 @@ class MinioService implements MinioServiceInterface
         }
     }
 
-    public static function uploadFile(string $bucketName, TemporaryUploadedFile $file)
+    public static function uploadFile(string $bucketName, string $path, TemporaryUploadedFile $file)
     {
         $client = (new self())->getS3Client();
 
         $result = $client->putObject([
             'Bucket' => $bucketName,
-            'Key' => $file->getClientOriginalName(),
+            'Key' => $path . $file->getClientOriginalName(),
             'Body' => fopen($file->path(), 'rb'),
             'ACL' => 'private',
         ]);
@@ -68,13 +68,13 @@ class MinioService implements MinioServiceInterface
         throw new UploadFileException('Erro ao enviar o arquivo: ' . $file->getClientOriginalName());
     }
 
-    public static function createFolder(string $bucketName, string $folderName)
+    public static function createFolder(string $bucketName, string $path, string $folderName)
     {
         $client = (new self())->getS3Client();
 
         $result = $client->putObject([
             'Bucket' => $bucketName,
-            'Key'    => $folderName . '/',
+            'Key'    => $path . $folderName . '/',
             'Body'   => '',
         ]);
 

@@ -15,19 +15,19 @@ class MyFilesService implements MyFilesServiceInterface
         //
     }
 
-    public function uploadFiles(array $files)
+    public function uploadFiles(array $files, string $path)
     {
         $bucket = Auth::user()->bucket->name;
 
         foreach($files as $file) {
-            MinioService::uploadFile($bucket, $file);
+            MinioService::uploadFile($bucket, $path, $file);
         }
     }
 
-    public function createFolder(string $folderName)
+    public function createFolder(string $folderName, string $path)
     {
         $bucket = Auth::user()->bucket->name;
-        MinioService::createFolder($bucket, $folderName);
+        MinioService::createFolder($bucket, $path, $folderName);
     }
 
     public function getListTree()
