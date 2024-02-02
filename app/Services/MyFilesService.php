@@ -47,6 +47,8 @@ class MyFilesService implements MyFilesServiceInterface
             }
         }
 
+        unset($currentList['size'], $currentList['lastModified'], $currentList['objectKey']);
+
         return $currentList;
     }
 

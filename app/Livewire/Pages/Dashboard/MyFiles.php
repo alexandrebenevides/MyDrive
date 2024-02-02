@@ -62,4 +62,15 @@ class MyFiles extends Component
         $this->myFilesService->removeItem($objectKey);
         $this->getListTree();
     }
+
+    public function moveDirectory(string $folderName = null)
+    {
+        if (is_null($folderName)) {
+            array_pop($this->pathStack);
+        } else {
+            array_push($this->pathStack, $folderName);
+        }
+
+        $this->getListTree();
+    }
 }

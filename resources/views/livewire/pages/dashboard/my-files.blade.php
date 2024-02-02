@@ -20,6 +20,15 @@
   <div class="card border-0">
     <div class="card-header">
       <h6 class="card-title">
+        @if (count($pathStack) > 0)
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          wire:click="moveDirectory()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        @endif
+        
         Diretório atual: /{{ implode('/', $pathStack) }}
       </h6>
     </div>
@@ -43,7 +52,16 @@
             <td>{{ $item['lastModified'] }}</td>
             <td>{{ $item['size'] }} bytes</td>
             <td>
-              <button 
+              @if ($item['size'] <= 0)
+              <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                wire:click="moveDirectory('{{ $key }}')">
+                  <i class="fa-solid fa-folder-open"></i>
+              </button>
+              @endif
+
+              <button
                 type="button"
                 class="btn btn-primary btn-sm"
                 wire:click="removeItem('{{ $item['objectKey'] }}')">
